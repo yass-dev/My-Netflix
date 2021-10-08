@@ -3,6 +3,7 @@ import Profile from '@/views/Profile.vue'
 import Browse from '@/views/Browse.vue';
 import Index from '@/views/Browse/Index.vue';
 import Review from '@/views/Browse/Review.vue';
+import WatchView from '../views/WatchView.vue';
 
 import * as ProfileGuard from './guards/ProfileGuard';
 
@@ -30,6 +31,12 @@ const routes = [
 			}
 		],
 		beforeEnter: ProfileGuard.requireProfile,
+	},
+	{
+		path: '/watch/:id',
+		name: 'watch',
+		component: WatchView,
+		// beforeEnter: ProfileGuard.requireProfile
 	}
 ]
 

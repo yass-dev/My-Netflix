@@ -41,6 +41,6 @@ export default ({
 		setProfile: (store, {profile}) =>
 		{
 			store.commit("SET_PROFILE", {profile: profile});
-		}
+		},
 	},
 })

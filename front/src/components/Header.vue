@@ -15,13 +15,23 @@ export default {
 		return {
 			opaque: false,
 			search_expanded: false,
+			profiles: this.$store.state.account.profiles_list.filter(profile => profile != this.$store.state.account.profile),
 		}
 	},
 	methods:
 	{
-		expand_search()
+		expand_search(e)
 		{
+			e.stopPropagation();
+
 			this.search_expanded = true;
+			this.$refs.search_input.addEventListener("focusout", this.unexpand_search);
+		},
+
+		unexpand_search()
+		{
+			this.search_expanded = false;
+			this.$refs.search_input.removeEventListener("focusout", this.unexpand_search);
 		},
 
 		scroll_handler(event)
@@ -30,6 +40,21 @@ export default {
 				this.opaque = true;
 			else
 				this.opaque = false;
+		},
+
+		show_account_popup()
+		{
+			this.$refs.account_popup.classList.add('active');
+		},
+
+		hide_account_popup()
+		{
+			this.$refs.account_popup.classList.remove('active');
+		},
+
+		switchProfile(profile)
+		{
+			this.$store.dispatch("account/setProfile", {profile: profile});
 		}
 	},
 	mounted()
@@ -56,15 +81,35 @@ export default {
 		<div class="tool_nav">
 			<div id="search_button" class="icon button" :class="{active: search_expanded}" @click="expand_search">
 				<label for="search"></label>
-				<input type="text" id="search" placeholder="Title, people, genres..."/>
+				<input ref="search_input" type="text" id="search" placeholder="Title, people, genres..."/>
 			</div>
 			<div id="notification_button" class="icon button"></div>
-			<div id="account_button" class="button">
-				<router-link to="/account">
-					<div class="profile_img_container">
-						<img :src="$store.state.account.profile.img"/>
+			<div id="account_button" class="button" @mouseenter="show_account_popup" @mouseleave="hide_account_popup">
+				<div class="profile_img_container">
+					<img :src="$store.state.account.profile.img"/>
+				</div>
+				<div id="account_popup" ref="account_popup">
+					<div class="chevron-up"></div>
+					<div class="content">
+						<section class="profile_section">
+							<div class="profile_item" @click="switchProfile(profile)" v-for="(profile, index) in profiles" :key="index">
+								<div class="image_container">
+									<img :src="profile.img"/>
+								</div>
+								{{ profile.name }}
+							</div>
+							<p id="manage_profiles_button">Manage profiles</p>
+						</section>
+						<section>
+							<p>Direct</p>
+						</section>
+						<section>
+							<p>Account</p>
+							<p>Help center</p>
+							<p>Logout</p>
+						</section>
 					</div>
-				</router-link>
+				</div>
 			</div>
 		</div>
 	</header>
@@ -212,6 +257,7 @@ header.opaque
 
 #account_button
 {
+	position: relative;
 	margin: 0;
 }
 
@@ -219,6 +265,73 @@ header.opaque
 {
 	width: 2.5rem;
 	height: 2.5rem;
+}
+
+#account_popup
+{
+	position: absolute;
+	top: 2.5rem;
+	right: 0;
+	transition: all 0.25s;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.25s;
+}
+
+.active#account_popup
+{
+	visibility: visible;
+	opacity: 1;
+}
+
+#account_popup .content
+{
+	display: flex;
+	flex-direction: column;
+	font-size: 0.85rem;
+	background: rgba(0, 0, 0, 0.95);
+	margin-top: 1rem;
+	width: 11rem;
+}
+
+#account_popup .content section
+{
+	padding: 0.25rem 0.5rem;
+}
+
+#account_popup .content .profile_item
+{
+	display: flex;
+	align-items: center;
+	padding: 0.25rem 0;
+	margin: 0.25rem;
+}
+
+#account_popup section > *:hover
+{
+	text-decoration: underline;
+}
+
+#account_popup .content .profile_item .image_container
+{
+	width: 2rem;
+	height: 2rem;
+	margin-right: 0.5rem;
+}
+
+#account_popup .content section:not(:last-child)
+{
+	border-bottom: solid 1px rgba(255, 255, 255, 0.3);
+}
+
+#account_popup .content p
+{
+	margin: 0.5rem;
+}
+
+#account_popup #manage_profiles_button
+{
+	padding-top: 0.25rem;
 }
 
 </style>

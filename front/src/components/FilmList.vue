@@ -1,6 +1,10 @@
 <script>
+
+import FilmPreview from './FilmPreview';
+
 export default {
 	name: "FilmList",
+	components: {FilmPreview},
 	props:
 	{
 		name:
@@ -24,12 +28,17 @@ export default {
 	{
 		return {
 			offset: 0,
+			preview_film: null
 		}
 	},
 	created()
 	{
 		if (this.films.length > 10 && this.numbered)
 			this.films.splice(0, 10);
+	},
+	mounted()
+	{
+		console.log(this.$refs);
 	},
 	methods:
 	{
@@ -40,32 +49,42 @@ export default {
 		swipe_left()
 		{
 			this.offset++;
-		}
+		},
+		show_preview(film)
+		{
+			this.preview_film = film;
+		},
+		hide_preview()
+		{
+			this.preview_film = null;
+		},
 	}
 }
 </script>
 
 <template>
 	<div class="film_list" :class="{numbered: numbered}">
-		<p class="category_name">{{ name }}</p>
-		<div class="slider">
-			<div class="left_button swipe_button" @click="swipe_left">
-				<i class="fas fa-chevron-left"></i>
-			</div>
-			<div class="slide_content">
-				<div class="slide_container" :style="{transform: 'translateX(' + offset * 100 + '%)'}">
-					<div class="slide" v-for="(film, index) in films" :key="film.id">
-						<svg v-if="numbered">
-							<use :href="'#rank-' + (index + 1)"></use>
-						</svg>
-						<div class="image_container">
-							<img :src="film.overview_img"/>
+		<div class="relative">
+			<p class="category_name">{{ name }}</p>
+			<div class="slider">
+				<div class="left_button swipe_button" @click="swipe_left">
+					<i class="fas fa-chevron-left"></i>
+				</div>
+				<div class="slide_content">
+					<div class="slide_container" :style="{transform: 'translateX(' + offset * 100 + '%)'}">
+						<div class="slide" v-for="(film, index) in films" :key="film.id">
+							<svg v-if="numbered">
+								<use :href="'#rank-' + (index + 1)"></use>
+							</svg>
+							<div class="image_container">
+								<img :src="film.overview_img"/>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="right_button swipe_button" @click="swipe_right">
-				<i class="fas fa-chevron-right"></i>
+				<div class="right_button swipe_button" @click="swipe_right">
+					<i class="fas fa-chevron-right"></i>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -75,7 +94,6 @@ export default {
 
 .film_list
 {
-	position: relative;
 	margin: 3vw 0;
 	width: 100%;
 	z-index: 1;
@@ -91,15 +109,16 @@ export default {
 
 .slider
 {
+	position: relative;
 	display: flex;
 	flex-wrap: nowrap;
-	position: relative;
 	width: 100%;
 	overflow: hidden;
 }
 
 .slide
 {
+	position: relative;
 	cursor: pointer;
 	padding: 0 2px;
 	flex: 0 0 25%;
@@ -194,9 +213,13 @@ export default {
 	width: 4%;
 	height: 100%;
 	cursor: pointer;
-	background: rgba(20,20,20,.5);
 	font-size: 1.5rem;
 	transition: all 0.125s;
+}
+
+.swipe_button:not(:first-child)
+{
+	background: rgba(20,20,20,.5);
 }
 
 .swipe_button *

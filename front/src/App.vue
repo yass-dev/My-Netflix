@@ -38,4 +38,9 @@ img
 	max-height: 100%;
 }
 
+.relative
+{
+	position: relative;
+}
+
 </style>

@@ -39,7 +39,6 @@ export default {
 
 .profile_item
 {
-	display: flex;
 	flex-direction: column;
 	cursor: pointer;
 	color: gray;

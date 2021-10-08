@@ -41,7 +41,7 @@ export default {
 		<Header fixed/>
 		<BillboardPresentation :film="billboard_film"/>
 		<FilmList name="Biggest success on Netflix" :films="popular_films"/>
-		<FilmList :name="'Resume with ' + this.$store.state.account.name + ' profile'" :films="shuffle(popular_films)"/>
+		<FilmList :name="'Resume with ' + this.$store.state.account.profile.name + ' profile'" :films="shuffle(popular_films)"/>
 		<FilmList name="Current trends" :films="shuffle(popular_films)"/>
 		<FilmList name="Review" :films="shuffle(popular_films)"/>
 		<FilmList name="Top 10 in France today" :films="shuffle(popular_films)" numbered/>

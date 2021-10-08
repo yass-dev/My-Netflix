@@ -48,6 +48,7 @@ export default {
 	left: 0;
 	width: 100%;
 	height: 56.25vw;
+	z-index: 0;
 }
 
 .image_container
