@@ -19,7 +19,7 @@
 
 export default {
 	name: "ControlBar",
-	props: ["audios", "subtitles", "duration", "currentTime", "film_name"],
+	props: ["audios", "subtitles", "duration", "currentTime", "film_name", "playing"],
 	data()
 	{
 		return {
@@ -33,7 +33,7 @@ export default {
 			volume_value: 100,
 			start_move_time_x: null,
 			current_time_value: this.currentTime,
-			is_playing: false,
+			is_playing: this.playing,
 			volume_enabled: true,
 			is_fullscreen: false,
 			time_remaining: this.duration
@@ -177,9 +177,10 @@ export default {
 	{
 		formatted_remaining_time()
 		{
-			let hours = parseInt(this.duration / 3600);
-			let minutes = parseInt((this.duration - hours * 3600) / 60);
-			let seconds = parseInt(this.duration - hours*3600 - minutes*60);
+			let remaining = this.duration - this.current_time_value;
+			let hours = parseInt(remaining / 3600);
+			let minutes = parseInt((remaining - hours * 3600) / 60);
+			let seconds = parseInt(remaining - hours*3600 - minutes*60);
 			hours = hours < 10 ? '0' + hours : hours;
 			minutes = minutes < 10 ? '0' + minutes : minutes;
 			seconds = seconds < 10 ? '0' + seconds : seconds;
@@ -189,6 +190,7 @@ export default {
 	updated()
 	{
 		this.current_time_value = this.currentTime;
+		this.is_playing = this.playing;
 	}
 }
 </script>
@@ -424,7 +426,7 @@ export default {
 {
 	position: relative;
 	width: 7vw;
-	max-width: 2.5rem;
+	max-width: 2rem;
 	cursor: pointer;
 	margin: 0 1.25vw;
 	transition: all 0.125s;

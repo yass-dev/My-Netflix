@@ -26,6 +26,10 @@ export default
 		loadMore()
 		{
 			this.$emit("load_more");
+		},
+		showPreview(film)
+		{
+			this.$emit("show_preview", film);
 		}
 	}
 }
@@ -35,7 +39,7 @@ export default
 	<div class="film_gallery">
 		<h2>{{ name }}</h2>
 		<div class="gallery">
-			<div class="gallery_item" v-for="(film) in films" :key="film.id">
+			<div class="gallery_item" v-for="(film) in films" :key="film.id" @click="showPreview(film)">
 				<div class="image_container">
 					<img :src="film.overview_img"/>
 				</div>

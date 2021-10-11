@@ -55,7 +55,8 @@ export default {
 					}
 				],
 			},
-			currentTime: 0
+			currentTime: 0,
+			is_playing: false
 		}
 	},
 	methods:
@@ -63,10 +64,12 @@ export default {
 		play()
 		{
 			this.$refs.video.play();
+			this.is_playing = !this.$refs.video.paused;
 		},
 		pause()
 		{
 			this.$refs.video.pause();
+			this.is_playing = !this.$refs.video.paused;
 		},
 		unmute()
 		{
@@ -111,6 +114,13 @@ export default {
 		goBack()
 		{
 			this.handleBack('/browse');
+		},
+		pause_play()
+		{
+			if (this.$refs.video.paused)
+				this.play()
+			else
+				this.pause();
 		}
 	},
 	created()
@@ -131,10 +141,12 @@ export default {
 				<path d="M6.357 11H21v2H6.357l4.585 5.35-1.518 1.3L2.866 12l6.558-7.65 1.518 1.3L6.357 11z" fill="currentColor"></path>
 			</svg>
 		</div>
-		<video ref="video">
-			<source :src="film.src" type="video/mp4">
-		</video>
-		<ControlBar :audios="film.audios" :subtitles="film.subtitles" :duration="film.duration" :currentTime="currentTime" :film_name="film.name"
+		<div class="video_container" @click="pause_play">
+			<video ref="video">
+				<source :src="film.src" type="video/mp4">
+			</video>
+		</div>
+		<ControlBar :audios="film.audios" :subtitles="film.subtitles" :duration="film.duration" :currentTime="currentTime" :film_name="film.name" :playing="is_playing"
 			@play="play"
 			@pause="pause"
 			@enable_volume="unmute"
@@ -170,6 +182,12 @@ export default {
 	height: 2rem;
 	cursor: pointer;
 	z-index: 1;
+}
+
+.video_container
+{
+	width: 100%;
+	height: 100%;
 }
 
 video

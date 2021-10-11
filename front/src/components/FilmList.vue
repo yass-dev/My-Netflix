@@ -1,10 +1,8 @@
 <script>
 
-import FilmPreview from './FilmPreview';
 
 export default {
 	name: "FilmList",
-	components: {FilmPreview},
 	props:
 	{
 		name:
@@ -36,10 +34,6 @@ export default {
 		if (this.films.length > 10 && this.numbered)
 			this.films.splice(0, 10);
 	},
-	mounted()
-	{
-		console.log(this.$refs);
-	},
 	methods:
 	{
 		swipe_right()
@@ -58,6 +52,10 @@ export default {
 		{
 			this.preview_film = null;
 		},
+		showPreview(film)
+		{
+			this.$emit('show_preview', film);
+		}
 	}
 }
 </script>
@@ -72,7 +70,7 @@ export default {
 				</div>
 				<div class="slide_content">
 					<div class="slide_container" :style="{transform: 'translateX(' + offset * 100 + '%)'}">
-						<div class="slide" v-for="(film, index) in films" :key="film.id">
+						<div class="slide" @click="showPreview(film)" v-for="(film, index) in films" :key="film.id">
 							<svg v-if="numbered">
 								<use :href="'#rank-' + (index + 1)"></use>
 							</svg>

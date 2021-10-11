@@ -115,7 +115,7 @@ export default {
 	</header>
 </template>
 
-<style>
+<style scoped>
 
 @font-face
 {
@@ -139,6 +139,14 @@ header.fixed
 	position: fixed;
 	top: 0;
 	left: 0;
+}
+
+@media screen and (max-width: 500px)
+{
+	header.fixed
+	{
+		position: static;
+	}
 }
 
 header.opaque

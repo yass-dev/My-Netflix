@@ -1,6 +1,11 @@
 <script>
+
+import SignIn from '../components/SignIn.vue';
+import SignUp from '../components/SignUp.vue';
+
 export default {
 	name: 'AuthView',
+	components: { SignIn, SignUp },
 	data()
 	{
 		return {
@@ -12,12 +17,8 @@ export default {
 
 <template>
 	<div class="auth_view">
-		<div v-if="mode == 'login'" class="login_div">
-			<p @click="this.mode = 'register'">Login</p>
-		</div>
-		<div v-if="mode == 'register'" class="register_div">
-			<p @click="this.mode = 'login'">Register</p>
-		</div>
+		<SignIn v-if="mode == 'login'" @change_mode="mode = 'register'"/>
+		<SignUp v-if="mode == 'register'" @change_mode="mode = 'login'"/>
 	</div>	
 </template>
 
