@@ -13,23 +13,138 @@ export default {
 		return {
 			film:
 			{
-				src: "/films/video.mp4",
-				audios: ["Français", "English", "Deutsch"],
-				subtitles: ["English", "Français", "Spanish", "Arab", "Deutsch"]
-			}
+				name: 'Guilty',
+				src: "/films/0/video.mp4",
+				duration: 170.859,
+				audios:
+				[
+					{
+						id: 0,
+						value: "Français"
+					},
+					{
+						id: 1,
+						value: "English"
+					},
+					{
+						id: 2,
+						value: "Deutsch"
+					}
+				],
+				subtitles:
+				[
+					{
+						id: 0,
+						value: "English"
+					},
+					{
+						id: 1,
+						value: "Français"
+					},
+					{
+						id: 2,
+						value: "Spanish"
+					},
+					{
+						id: 3,
+						value: "Arab"
+					},
+					{
+						id: 4,
+						value: "Deutsch"
+					}
+				],
+			},
+			currentTime: 0
 		}
+	},
+	methods:
+	{
+		play()
+		{
+			this.$refs.video.play();
+		},
+		pause()
+		{
+			this.$refs.video.pause();
+		},
+		unmute()
+		{
+			this.$refs.video.muted = false;
+		},
+		mute()
+		{
+			this.$refs.video.muted = true;
+		},
+		setVolume(value)
+		{
+			this.$refs.video.volume = value;
+		},
+		setAudio()
+		{
+
+		},
+		seSubtitle()
+		{
+
+		},
+		setSpeed(speed)
+		{
+			this.$refs.video.playbackRate = speed;
+		},
+		setCurrentTime(value)
+		{
+			this.$refs.video.currentTime = value;
+		},
+		setFullscreen()
+		{
+			let elem = this.$refs.watch_view;
+			if (elem.requestFullscreen)
+				elem.requestFullscreen();
+			else if (elem.webkitRequestFullscreen) // Safari
+				elem.webkitRequestFullscreen();
+		},
+		exitFullscreen()
+		{
+			document.exitFullscreen();
+		},
+		goBack()
+		{
+			this.handleBack('/browse');
+		}
+	},
+	created()
+	{
+		window.setInterval(() =>
+		{
+			if (this.$refs.video)
+				this.currentTime = this.$refs.video.currentTime;
+		}, 10);
 	}
 }
 </script>
 
 <template>
-	<div class="watch_view">
-		<div class="back_button">
+	<div class="watch_view" ref="watch_view">
+		<div class="back_button" @click="goBack">
 			<svg viewBox="0 0 24 24">
 				<path d="M6.357 11H21v2H6.357l4.585 5.35-1.518 1.3L2.866 12l6.558-7.65 1.518 1.3L6.357 11z" fill="currentColor"></path>
 			</svg>
 		</div>
-		<ControlBar :audios="film.audios" :subtitles="film.subtitles"/>
+		<video ref="video">
+			<source :src="film.src" type="video/mp4">
+		</video>
+		<ControlBar :audios="film.audios" :subtitles="film.subtitles" :duration="film.duration" :currentTime="currentTime" :film_name="film.name"
+			@play="play"
+			@pause="pause"
+			@enable_volume="unmute"
+			@disable_volume="mute"
+			@volume_changed="setVolume"
+			@speed_changed="setSpeed"
+			@time_changed="setCurrentTime"
+			@enable_fullscreen="setFullscreen"
+			@exit_fullscreen="exitFullscreen"
+		/>
 	</div>
 </template>
 
@@ -51,13 +166,16 @@ export default {
 	position: fixed;
 	top: 1rem;
 	left: 1rem;
-}
-
-.back_button
-{
 	width: 2rem;
 	height: 2rem;
 	cursor: pointer;
+	z-index: 1;
+}
+
+video
+{
+	width: 100%;
+	height: 100%;
 }
 
 </style>

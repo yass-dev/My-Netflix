@@ -4,10 +4,16 @@ import Browse from '@/views/Browse.vue';
 import Index from '@/views/Browse/Index.vue';
 import Review from '@/views/Browse/Review.vue';
 import WatchView from '../views/WatchView.vue';
+import AuthView from '../views/AuthView.vue';
 
 import * as ProfileGuard from './guards/ProfileGuard';
 
 const routes = [
+	{
+		path: '/',
+		name: 'auth',
+		component: AuthView
+	},
 	{
 		path: '/profiles',
 		name: 'profile',
