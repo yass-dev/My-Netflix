@@ -7,7 +7,6 @@ export default {
 	{
 		return {
 			profiles: this.$store.state.account.profiles_list,
-			// unsubscribe: this.$store.subscribe(this.reloadProfiles)
 		}
 	},
 	methods:

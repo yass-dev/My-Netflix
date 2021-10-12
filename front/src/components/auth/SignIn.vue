@@ -20,9 +20,10 @@ export default {
 			.then(res =>
 			{
 				window.localStorage.setItem('access_token', res.access_token);
-				console.log("Signed in !");
-				this.$store.dispatch('account/init');
-				this.$router.push('/profiles');
+				this.$store.dispatch('account/init').then(() =>
+				{
+					this.$router.push('/profiles');
+				});
 			})
 			.catch(err =>
 			{
