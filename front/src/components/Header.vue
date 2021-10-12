@@ -216,6 +216,7 @@ header.opaque
 {
 	display: flex;
 	align-items: center;
+	max-width: 100%;
 }
 
 .links_container a

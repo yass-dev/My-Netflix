@@ -89,19 +89,13 @@ export default {
 {
 	position: fixed;
 	top: 2rem;
-	left: 20vw;
-	width: 60vw;
+	left: 25vw;
+	width: 50vw;
+	max-height: 100%;
+	overflow-y: auto;
+	padding-bottom: 2rem;
 	z-index: 999;
 	background: #181818;
-}
-
-@media screen and (max-width: 850px)
-{
-	.film_preview
-	{
-		width: 80vw;
-		left: 10vw;
-	}
 }
 
 @media screen and (max-width: 850px)
@@ -213,10 +207,17 @@ img
 
 .details
 {
-	display: grid;
-	grid-template-columns: minmax(0,2fr) minmax(0,1fr);
-	column-gap: 2em;
+	display: flex;
+	justify-content: space-between;
 	padding: 1rem 2rem;
+}
+
+@media screen and (max-width: 500px)
+{
+	.details
+	{
+		flex-direction: column;
+	}
 }
 
 .details .synopsys
@@ -224,11 +225,17 @@ img
 	font-size: 1.125rem;
 }
 
+.details .left
+{
+	width: 60%;
+}
+
 .details .right
 {
 	display: flex;
 	flex-direction: column;
 	font-size: 0.9rem;
+	width: 30%;
 }
 
 .details .right p

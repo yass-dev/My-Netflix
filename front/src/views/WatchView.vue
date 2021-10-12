@@ -22,38 +22,8 @@ export default {
 						id: 0,
 						value: "Français"
 					},
-					{
-						id: 1,
-						value: "English"
-					},
-					{
-						id: 2,
-						value: "Deutsch"
-					}
 				],
-				subtitles:
-				[
-					{
-						id: 0,
-						value: "English"
-					},
-					{
-						id: 1,
-						value: "Français"
-					},
-					{
-						id: 2,
-						value: "Spanish"
-					},
-					{
-						id: 3,
-						value: "Arab"
-					},
-					{
-						id: 4,
-						value: "Deutsch"
-					}
-				],
+				subtitles: [],
 			},
 			currentTime: 0,
 			is_playing: false
