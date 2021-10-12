@@ -56,6 +56,11 @@ export default {
 		switchProfile(profile)
 		{
 			this.$store.dispatch("account/setProfile", {profile: profile});
+		},
+
+		logout()
+		{
+			document.location.pathname = '/';
 		}
 	},
 	computed:
@@ -86,9 +91,9 @@ export default {
 		<div class="links_container" :class="{active: expand_links}" @mouseleave="expand_links = false">
 			<router-link :to="{name: 'browse_index'}">Home</router-link>
 			<router-link :to="{name: 'browse_watch_again'}">Review</router-link>
-			<router-link to="">Series</router-link>
-			<router-link to="">Movies</router-link>
-			<router-link to="">Most viewed</router-link>
+			<router-link :to="{name: 'browse_index'}">Series</router-link>
+			<router-link :to="{name: 'browse_index'}">Movies</router-link>
+			<router-link :to="{name: 'browse_index'}">Most viewed</router-link>
 		</div>
 		<div class="tool_nav">
 			<div id="search_button" class="icon button" :class="{active: search_expanded}" @click="expand_search">
@@ -118,7 +123,7 @@ export default {
 						<section>
 							<p>Account</p>
 							<p>Help center</p>
-							<p>Logout</p>
+							<p @click="logout">Logout</p>
 						</section>
 					</div>
 				</div>

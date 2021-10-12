@@ -57,6 +57,11 @@ export default ({
 					reject();
 				});
 			})
+		},
+
+		logout(store)
+		{
+			store.commit("RESTORE");
 		}
 	},
 	getters:
