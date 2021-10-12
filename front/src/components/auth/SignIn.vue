@@ -1,4 +1,7 @@
 <script>
+
+import * as AuthService from '../../services/auth.service';
+
 export default {
 	name: 'SignIn',
 	methods:
@@ -6,6 +9,26 @@ export default {
 		goToSignUp()
 		{
 			this.$emit('change_mode')
+		},
+		signIn(e)
+		{
+			e.preventDefault();
+			let email = this.$refs.email.value;
+			let password = this.$refs.password.value;
+
+			AuthService.sign_in(email, password)
+			.then(res =>
+			{
+				window.localStorage.setItem('access_token', res.access_token);
+				console.log("Signed in !");
+				this.$store.dispatch('account/init');
+				this.$router.push('/profiles');
+			})
+			.catch(err =>
+			{
+				console.log(err);
+				alert("Invalid credentials");
+			})
 		}
 	}
 }
@@ -14,9 +37,11 @@ export default {
 <template>
 	<div class="sign_in">
 		<h1>Sign in</h1>
-		<input type="text" placeholder="Email" ref="email"/>
-		<input type="password" placeholder="Password" ref="password"/>
-		<div id="sign_in_button">Sign in</div>
+		<form @submit="signIn">
+			<input type="text" placeholder="Email" ref="email" value="yass@gmail.com"/>
+			<input type="password" placeholder="Password" ref="password"/>
+			<input type="submit" id="sign_in_button" value="Sign in"/>
+		</form>
 		<p @click="goToSignUp">New to Netflix ? <span>Sign up now</span></p>
 	</div>
 </template>
@@ -43,7 +68,7 @@ export default {
 	}
 }
 
-.sign_in > *
+.sign_in form > *
 {
 	width: 100%;
 }

@@ -1,7 +1,7 @@
 <script>
 
-import SignIn from '../components/SignIn.vue';
-import SignUp from '../components/SignUp.vue';
+import SignIn from '../components/auth/SignIn.vue';
+import SignUp from '../components/auth/SignUp.vue';
 
 export default {
 	name: 'AuthView',

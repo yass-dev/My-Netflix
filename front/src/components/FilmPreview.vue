@@ -89,10 +89,28 @@ export default {
 {
 	position: fixed;
 	top: 2rem;
-	left: 10vw;
-	width: 80vw;
+	left: 20vw;
+	width: 60vw;
 	z-index: 999;
 	background: #181818;
+}
+
+@media screen and (max-width: 850px)
+{
+	.film_preview
+	{
+		width: 80vw;
+		left: 10vw;
+	}
+}
+
+@media screen and (max-width: 850px)
+{
+	.film_preview
+	{
+		width: 95vw;
+		left: 2.5vw;
+	}
 }
 
 header

@@ -1,26 +1,41 @@
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
 	name: "ProfileList",
 	data()
 	{
 		return {
-			profiles: this.$store.state.account.profiles_list
+			profiles: this.$store.state.account.profiles_list,
+			// unsubscribe: this.$store.subscribe(this.reloadProfiles)
 		}
 	},
 	methods:
 	{
+		reloadProfiles(mutation, state)
+		{
+			if (mutation.type == "account/INIT_ACCOUNT")
+				this.profiles = this.$store.state.account.profiles_list
+		},
 		set_profile(profile)
 		{
 			this.$store.dispatch("account/setProfile", {profile});
 			this.$router.push({name: "browse_index"});
 		}
+	},
+	computed:
+	{
+		...mapGetters(
+			{
+				getProfiles: 'account/getProfiles'
+			})
 	}
 }
 </script>
 
 <template>
 	<div class="profile_list">
-		<div class="profile_item" v-for="profile in profiles" :key="profile.id" @click="set_profile(profile)">
+		<div class="profile_item" v-for="profile in getProfiles" :key="profile.id" @click="set_profile(profile)">
 			<div class="img_container">
 				<img :src="profile.img"/>
 			</div>

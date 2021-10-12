@@ -1,4 +1,5 @@
 <script>
+import { mapGetters } from 'vuex';
 export default {
 	name: "Header",
 	props:
@@ -15,7 +16,7 @@ export default {
 		return {
 			opaque: false,
 			search_expanded: false,
-			profiles: this.$store.state.account.profiles_list.filter(profile => profile != this.$store.state.account.profile),
+			expand_links: false
 		}
 	},
 	methods:
@@ -57,6 +58,14 @@ export default {
 			this.$store.dispatch("account/setProfile", {profile: profile});
 		}
 	},
+	computed:
+	{
+		...mapGetters(
+		{
+			getProfile: 'account/getProfile',
+			getProfiles: 'account/getOtherProfiles'
+		})
+	},
 	mounted()
 	{
 		document.addEventListener("scroll", this.scroll_handler);
@@ -71,7 +80,10 @@ export default {
 <template>
 	<header :class="{fixed: fixed, opaque: opaque}">
 		<router-link :to="{name: 'browse_index'}" class="logo icon"></router-link>
-		<div class="links_container">
+		<div class="links_container_toggler" @mouseenter="expand_links = true">
+			Browse
+		</div>
+		<div class="links_container" :class="{active: expand_links}" @mouseleave="expand_links = false">
 			<router-link :to="{name: 'browse_index'}">Home</router-link>
 			<router-link :to="{name: 'browse_watch_again'}">Review</router-link>
 			<router-link to="">Series</router-link>
@@ -86,13 +98,13 @@ export default {
 			<div id="notification_button" class="icon button"></div>
 			<div id="account_button" class="button" @mouseenter="show_account_popup" @mouseleave="hide_account_popup">
 				<div class="profile_img_container">
-					<img :src="$store.state.account.profile.img"/>
+					<img :src="getProfile.img"/>
 				</div>
 				<div id="account_popup" ref="account_popup">
 					<div class="chevron-up"></div>
 					<div class="content">
 						<section class="profile_section">
-							<div class="profile_item" @click="switchProfile(profile)" v-for="(profile, index) in profiles" :key="index">
+							<div class="profile_item" @click="switchProfile(profile)" v-for="(profile, index) in getProfiles" :key="index">
 								<div class="image_container">
 									<img :src="profile.img"/>
 								</div>
@@ -173,6 +185,28 @@ header.opaque
 	content: '\e5d0';
 }
 
+.links_container_toggler
+{
+	display: none;
+	padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+	cursor: pointer;
+}
+
+.links_container_toggler:after
+{
+	content: '';
+	width: 0;
+	height: 0;
+	position: absolute;
+	top: 50%;
+	border-style: solid;
+	border-width: 5px 5px 0 5px;
+	border-color: #fff transparent transparent transparent;
+	margin-left: 5px;
+	transform: translateY(-50%);
+}
+
 .links_container
 {
 	display: flex;
@@ -183,6 +217,47 @@ header.opaque
 {
 	margin: 0rem 1rem;
 	font-size: 0.9rem;
+}
+
+@media screen and (max-width: 800px)
+{
+	.links_container_toggler
+	{
+		display: block;
+	}
+
+	.links_container
+	{
+		display: none;
+		position: absolute;
+		top: 4rem;
+		left: calc(4.6rem + 4vw);
+		flex-direction: column;
+		transform: translateX(-25%);
+		background: rgba(0, 0, 0, 0.85);
+		z-index: 9;
+	}
+
+	.links_container.active
+	{
+		display: flex;
+	}
+
+	.links_container a
+	{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 250px;
+		height: 50px;
+		margin: 0;
+		transition: all 0.25s;
+	}
+
+	.links_container a:hover
+	{
+		background: rgba(255, 255, 255, 0.05);
+	}
 }
 
 .tool_nav

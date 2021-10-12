@@ -1,46 +1,56 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
+import * as AuthService from '../services/auth.service'
 
 export default ({
 	namespaced: true,
 	state:
 	{
 		profile: null,
-		profiles_list:
-			[
-				{
-					id: 0,
-					img: "/img/profiles/0/0.png",
-					name: "Fabricio"
-				},
-				{
-					id: 1,
-					img: "/img/profiles/0/1.png",
-					name: "Jean"
-				},
-				{
-					id: 2,
-					img: "/img/profiles/0/2.png",
-					name: "Anthony"
-				},
-				{
-					id: 3,
-					img: "/img/profiles/0/3.png",
-					name: "Maxime"
-				},
-			]
+		profiles_list: []
 	},
 	mutations:
 	{
 		SET_PROFILE(state, {profile: profile})
 		{
 			state.profile = profile;
+		},
+
+		INIT_ACCOUNT(state, {account: account})
+		{
+			state.profile = null;
+			state.profiles_list = account.profiles;
 		}
 	},
 	actions:
 	{
-		setProfile: (store, {profile}) =>
+		setProfile(store, {profile})
 		{
 			store.commit("SET_PROFILE", {profile: profile});
 		},
+		
+		init(store)
+		{
+			AuthService.loadAccount().then(account =>
+			{
+				store.commit('INIT_ACCOUNT', {account: account})
+			})
+		}
 	},
+	getters:
+	{
+		getProfile(state)
+		{
+			return state.profile;
+		},
+
+		getProfiles(state)
+		{
+			return state.profiles_list;
+		},
+
+		getOtherProfiles(state)
+		{
+			return state.profiles_list.filter(profile => profile != state.profile)
+		}
+	}
 })

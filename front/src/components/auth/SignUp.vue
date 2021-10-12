@@ -1,4 +1,7 @@
 <script>
+
+import * as AuthService from '../../services/auth.service';
+
 export default {
 	name: 'SignUp',
 	methods:
@@ -6,6 +9,13 @@ export default {
 		goToSignIn()
 		{
 			this.$emit('change_mode')
+		},
+
+		signUp()
+		{
+			let email = this.$refs.email.value;
+			let password = this.$refs.password.value;
+			AuthService.sign_up(email, password);
 		}
 	}
 }
@@ -16,7 +26,7 @@ export default {
 		<h1>Sign up</h1>
 		<input type="text" placeholder="Email" ref="email"/>
 		<input type="password" placeholder="Password" ref="password"/>
-		<div id="sign_up_button">Sign up</div>
+		<div id="sign_up_button" @click="signUp">Sign up</div>
 		<p @click="goToSignIn">Already on Netflix ? <span>Sign in now</span></p>
 	</div>
 </template>

@@ -46,7 +46,7 @@ export default {
 <template>
 	<div>
 		<Header fixed/>
-		<BillboardPresentation :film="billboard_film"/>
+		<BillboardPresentation :film="billboard_film" @show_preview="showPreview"/>
 		<FilmList name="Biggest success on Netflix" :films="popular_films" @show_preview="showPreview"/>
 		<FilmList :name="'Resume with ' + this.$store.state.account.profile.name + ' profile'" :films="shuffle(popular_films)" @show_preview="showPreview"/>
 		<FilmList name="Current trends" :films="shuffle(popular_films)" @show_preview="showPreview"/>
