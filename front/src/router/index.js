@@ -7,8 +7,6 @@ import WatchView from '../views/WatchView.vue';
 import AuthView from '../views/AuthView.vue';
 import AccountStore from '../store/account';
 
-import * as ProfileGuard from './guards/ProfileGuard';
-
 const routes = [
 	{
 		path: '/',
