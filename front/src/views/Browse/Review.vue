@@ -1,8 +1,8 @@
 <script>
 
 import Header from '@/components/Header';
-import FilmGallery from '../../components/FilmGallery.vue';
-import FilmPreview from '../../components/FilmPreview.vue';
+import FilmGallery from '../../components/films_components/FilmGallery.vue';
+import FilmPreview from '../../components/films_components/FilmPreview.vue';
 
 export default {
 	name: "Review",
@@ -24,7 +24,10 @@ export default {
 	{
 		loadMore(type)
 		{
-			alert("Load more " + type);
+			if (type == 'series')
+				this.series = this.series.concat(this.$store.state.popular_films);
+			else
+				this.films = this.films.concat(this.$store.state.popular_films);
 		},
 		showPreview(film)
 		{
@@ -41,7 +44,7 @@ export default {
 		<div class="content">
 			<h1>Review</h1>
 			<FilmGallery name="Series" :films="series" @load_more="loadMore('series')" @show_preview="showPreview"/>
-			<FilmGallery name="Films" :films="series" @load_more="loadMore('films')" @show_preview="showPreview"/>
+			<FilmGallery name="Films" :films="films" @load_more="loadMore('films')" @show_preview="showPreview"/>
 			<FilmPreview :film="preview_film" v-if="preview_film" @close="this.preview_film = null"/>
 		</div>
 	</div>

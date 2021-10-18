@@ -7,26 +7,30 @@ export default ({
 	{
 		id: null,
 		email: null,
-		profile: null,
+		profile_name: null,
+		profile_img: null,
 		profiles_list: []
 	},
 	mutations:
 	{
 		SET_PROFILE(state, {profile: profile})
 		{
-			state.profile = profile;
+			state.profile_name = profile.name;
+			state.profile_img = profile.img;
 		},
 
 		INIT_ACCOUNT(state, {account: account})
 		{
+			console.log("INITTT", account);
 			state.id = account.id;
 			state.email = account.email;
-			state.profile = null;
 			state.profiles_list = account.profiles;
+			console.log("INITTT", state);
 		},
 		RESTORE(state)
 		{
-			state.profile = null;
+			state.profile_name = null;
+			state.profile_img = null;
 			state.profiles_list = [];
 			state.id = null;
 			state.email = null;
@@ -38,6 +42,28 @@ export default ({
 		{
 			store.commit("SET_PROFILE", {profile: profile});
 		},
+
+		sign_in(store, {email: email, password: password})
+		{
+			return new Promise((resolve, reject) =>
+			{
+			AuthService.sign_in(email, password)
+				.then(res =>
+				{
+					window.localStorage.setItem('access_token', res.access_token);
+					store.dispatch('init')
+					.then(() =>
+					{
+						resolve();
+					})
+					.catch(err => reject(err));
+				})
+				.catch(err =>
+				{
+					reject(err);
+				})
+			});
+		},
 		
 		async init(store)
 		{
@@ -47,21 +73,22 @@ export default ({
 				.then(account =>
 				{
 					store.commit('INIT_ACCOUNT', {account: account});
-					console.log(account);
 					resolve();
+					return ;
 				})
 				.catch(err =>
 				{
 					console.log(err);
 					store.commit('RESTORE');
-					reject();
+					reject(err);
+					return ;
 				});
 			})
 		},
 
-		logout(store)
+		async logout(store)
 		{
-			store.commit("RESTORE");
+			await store.commit("RESTORE");
 		}
 	},
 	getters:
@@ -80,5 +107,5 @@ export default ({
 		{
 			return state.profiles_list.filter(profile => profile != state.profile)
 		}
-	}
+	},
 })

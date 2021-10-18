@@ -26,23 +26,67 @@ export default {
 	{
 		return {
 			offset: 0,
-			preview_film: null
+			preview_film: null,
+			slide_per_view: 0,
+			show_left_swipe_button: false,
+			show_right_swipe_button: false
 		}
 	},
 	created()
 	{
 		if (this.films.length > 10 && this.numbered)
-			this.films.splice(0, 10);
+			this.films.splice(10);
+	},
+	mounted()
+	{
+		if (this.numbered)
+			console.log("I AM NUMBERED => ", this.films.length)
+		this.setSlidePerView();
+		this.handleSwipeButtonsVisibility();
+		window.addEventListener('resize', this.setSlidePerView);
+	},
+	beforeUnmount()
+	{
+		window.removeEventListener('resize', this.setSlidePerView);
 	},
 	methods:
 	{
+		handleSwipeButtonsVisibility()
+		{
+			let films_in_overflow = this.films.length - this.slide_per_view * (-this.offset);
+			if (films_in_overflow > this.slide_per_view)
+				this.show_right_swipe_button = true;
+			else
+				this.show_right_swipe_button = false;
+			
+			if (this.offset < 0)
+				this.show_left_swipe_button = true;
+			else
+				this.show_left_swipe_button = false;
+		},
+		setSlidePerView()
+		{
+			let width = window.innerWidth;
+			if (width < 500)
+				this.slide_per_view = 2;
+			else if (width < 800)
+				this.slide_per_view = 3;
+			else if (width < 1100)
+				this.slide_per_view = 4;
+			else if (width < 1400)
+				this.slide_per_view = 5;
+			else
+				this.slide_per_view = 6;
+		},
 		swipe_right()
 		{
 			this.offset--;
+			this.handleSwipeButtonsVisibility();
 		},
 		swipe_left()
 		{
 			this.offset++;
+			this.handleSwipeButtonsVisibility();
 		},
 		show_preview(film)
 		{
@@ -65,11 +109,11 @@ export default {
 		<div class="relative">
 			<p class="category_name">{{ name }}</p>
 			<div class="slider">
-				<div class="left_button swipe_button" @click="swipe_left">
+				<div class="left_button swipe_button" @click="swipe_left" v-if="show_left_swipe_button">
 					<i class="fas fa-chevron-left"></i>
 				</div>
 				<div class="slide_content">
-					<div class="slide_container" :style="{transform: 'translateX(' + offset * 100 + '%)'}">
+					<div class="slide_container" :style="{transform: 'translateX(' + offset * 100 + '%)'}" ref="slide_container">
 						<div class="slide" @click="showPreview(film)" v-for="(film, index) in films" :key="film.id">
 							<svg v-if="numbered">
 								<use :href="'#rank-' + (index + 1)"></use>
@@ -80,7 +124,7 @@ export default {
 						</div>
 					</div>
 				</div>
-				<div class="right_button swipe_button" @click="swipe_right">
+				<div class="right_button swipe_button" @click="swipe_right" v-if="show_right_swipe_button">
 					<i class="fas fa-chevron-right"></i>
 				</div>
 			</div>
@@ -121,6 +165,7 @@ export default {
 	padding: 0 2px;
 	flex: 0 0 25%;
 	width: 25%;
+	background: #141414;
 }
 
 @media screen and (max-width:499px)
@@ -170,6 +215,7 @@ export default {
 
 .slide_content
 {
+	width: 100%;
 	padding: 0 4%;
 }
 

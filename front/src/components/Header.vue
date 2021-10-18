@@ -60,14 +60,14 @@ export default {
 
 		logout()
 		{
-			document.location.pathname = '/';
+			this.$store.dispatch('account/logout');
+			this.$router.push("/")
 		}
 	},
 	computed:
 	{
 		...mapGetters(
 		{
-			getProfile: 'account/getProfile',
 			getProfiles: 'account/getOtherProfiles'
 		})
 	},
@@ -94,6 +94,7 @@ export default {
 			<router-link :to="{name: 'browse_index'}">Series</router-link>
 			<router-link :to="{name: 'browse_index'}">Movies</router-link>
 			<router-link :to="{name: 'browse_index'}">Most viewed</router-link>
+			<router-link :to="{name: 'my_profile'}">My profile</router-link>
 		</div>
 		<div class="tool_nav">
 			<div id="search_button" class="icon button" :class="{active: search_expanded}" @click="expand_search">
@@ -103,7 +104,7 @@ export default {
 			<div id="notification_button" class="icon button"></div>
 			<div id="account_button" class="button" @mouseenter="show_account_popup" @mouseleave="hide_account_popup">
 				<div class="profile_img_container">
-					<img :src="getProfile.img"/>
+					<img :src="this.$store.state.account.profile_img"/>
 				</div>
 				<div id="account_popup" ref="account_popup">
 					<div class="chevron-up"></div>

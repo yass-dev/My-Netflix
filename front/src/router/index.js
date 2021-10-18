@@ -5,7 +5,8 @@ import Index from '@/views/Browse/Index.vue';
 import Review from '@/views/Browse/Review.vue';
 import WatchView from '../views/WatchView.vue';
 import AuthView from '../views/AuthView.vue';
-import AccountStore from '../store/account';
+import MyProfile from '../views/MyProfile';
+import store from '../store/index';
 
 const routes = [
 	{
@@ -44,6 +45,12 @@ const routes = [
 		name: 'watch',
 		component: WatchView,
 		meta: {requiresAuth: true, requiresProfile: true},
+	},
+	{
+		path: '/my-profile',
+		name: 'my_profile',
+		component: MyProfile,
+		meta: {requiresAuth: false, requiresProfile: false}
 	}
 ];
 
@@ -56,7 +63,7 @@ router.beforeEach((to, from, next) =>
 {
 	if (to.matched.some(record => record.meta.requiresAuth))
 	{
-		if (AccountStore.state.id)
+		if (store.state.account.id)
 		{
 			next();
 			return ;
@@ -65,7 +72,7 @@ router.beforeEach((to, from, next) =>
 	}
 	else if (to.matched.some(record => record.meta.requiresProfile))
 	{
-		if (AccountStore.state.profile)
+		if (AccountStore.state.profile_name)
 		{
 			next();
 			return ;

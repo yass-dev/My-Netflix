@@ -53,13 +53,15 @@ export default {
 		},
 		back_10()
 		{
-			this.current_time_value = this.current_time_value > 10 ? this.current_time_value - 10 : 0;
-			this.$emit('time_changed', this.current_time_value);
+			this.$emit('back_10');
+			// this.current_time_value = this.current_time_value > 10 ? this.current_time_value - 10 : 0;
+			// this.$emit('time_changed', this.current_time_value);
 		},
 		forward_10()
 		{
-			this.current_time_value = this.current_time_value < this.duration - 10 ? this.current_time_value + 10 : this.duration;
-			this.$emit('time_changed', this.current_time_value);
+			this.$emit('forward_10');
+			// this.current_time_value = this.current_time_value < this.duration - 10 ? this.current_time_value + 10 : this.duration;
+			// this.$emit('time_changed', this.current_time_value);
 		},
 		switchAudio(audio)
 		{

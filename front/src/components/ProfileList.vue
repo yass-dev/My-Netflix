@@ -3,19 +3,8 @@ import { mapGetters } from 'vuex'
 
 export default {
 	name: "ProfileList",
-	data()
-	{
-		return {
-			profiles: this.$store.state.account.profiles_list,
-		}
-	},
 	methods:
 	{
-		reloadProfiles(mutation, state)
-		{
-			if (mutation.type == "account/INIT_ACCOUNT")
-				this.profiles = this.$store.state.account.profiles_list
-		},
 		set_profile(profile)
 		{
 			this.$store.dispatch("account/setProfile", {profile});

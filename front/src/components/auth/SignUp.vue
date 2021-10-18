@@ -42,7 +42,7 @@ export default {
 	color: white;
 	width: 40vw;
 	min-width: 15rem;
-	max-width: 30rem;
+	max-width: 25rem;
 }
 
 @media screen and (max-width: 500px)

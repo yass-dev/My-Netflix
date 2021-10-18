@@ -53,14 +53,6 @@ export default {
 		{
 			this.$refs.video.volume = value;
 		},
-		setAudio()
-		{
-
-		},
-		seSubtitle()
-		{
-
-		},
 		setSpeed(speed)
 		{
 			this.$refs.video.playbackRate = speed;
@@ -91,6 +83,18 @@ export default {
 				this.play()
 			else
 				this.pause();
+		},
+		forward_10()
+		{
+			this.$refs.video.currentTime += 10;
+			if (this.$refs.video.currentTime > this.$refs.video.duration)
+				this.$refs.video.currentTime = this.$refs.video.duration;
+		},
+		back_10()
+		{
+			this.$refs.video.currentTime -= 10;
+			if (this.$refs.video.currentTim < 0)
+				this.$refs.video.currentTime = 0;
 		}
 	},
 	created()
@@ -126,6 +130,8 @@ export default {
 			@time_changed="setCurrentTime"
 			@enable_fullscreen="setFullscreen"
 			@exit_fullscreen="exitFullscreen"
+			@back_10="back_10"
+			@forward_10="forward_10"
 		/>
 	</div>
 </template>

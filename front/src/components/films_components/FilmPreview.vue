@@ -14,6 +14,7 @@ export default {
 
 <template>
 	<div class="film_preview">
+		<div class="fade" @click="closePreview"></div>
 		<header>
 			<div class="button" id="close_button" @click="closePreview">
 				<svg viewBox="0 0 24 24">
@@ -96,6 +97,16 @@ export default {
 	padding-bottom: 2rem;
 	z-index: 999;
 	background: #181818;
+}
+
+.fade
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 0;
 }
 
 @media screen and (max-width: 850px)
@@ -207,9 +218,11 @@ img
 
 .details
 {
+	position: relative;
 	display: flex;
 	justify-content: space-between;
 	padding: 1rem 2rem;
+	z-index: 0;
 }
 
 @media screen and (max-width: 500px)

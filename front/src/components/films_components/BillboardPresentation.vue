@@ -16,7 +16,10 @@ export default {
 	<div class="billboard_presentation">
 		<div class="billboard">
 			<div class="image_container">
-				<img :src="film.overview_img"/>
+				<img :src="film.overview_img" v-if="film.overview_img"/>
+				<video v-if="film.overview_video">
+					<source :src="film.overview_video" type="video/mp4"/>
+				</video>
 				<div class="image_mask"></div>
 				<div class="bottom_mask"></div>
 			</div>
@@ -74,7 +77,8 @@ export default {
 	width: 100%;
 }
 
-img
+img,
+video
 {
 	width: 100%;
 }

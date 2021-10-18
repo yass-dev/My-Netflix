@@ -16,19 +16,16 @@ export default {
 			let email = this.$refs.email.value;
 			let password = this.$refs.password.value;
 
-			AuthService.sign_in(email, password)
-			.then(res =>
+			this.$store.dispatch('account/sign_in', {email: email, password: password})
+			.then(() =>
 			{
-				window.localStorage.setItem('access_token', res.access_token);
-				this.$store.dispatch('account/init').then(() =>
-				{
-					this.$router.push('/profiles');
-				});
+				this.$router.push('/profiles');
 			})
 			.catch(err =>
 			{
-				console.log(err);
-				alert("Invalid credentials");
+				if (err.response.status == 401)
+					alert("Invalid credentials");
+				console.log("Error =>", err);
 			})
 		}
 	}
@@ -58,7 +55,7 @@ export default {
 	color: white;
 	width: 40vw;
 	min-width: 15rem;
-	max-width: 30rem;
+	max-width: 25rem;
 }
 
 @media screen and (max-width: 500px)

@@ -1,9 +1,10 @@
 <script>
 
 import Header from '@/components/Header';
-import BillboardPresentation from '@/components/BillboardPresentation';
-import FilmList from '@/components/FilmList';
-import FilmPreview from '@/components/FilmPreview.vue';
+import BillboardPresentation from '@/components/films_components/BillboardPresentation';
+import FilmList from '@/components/films_components/FilmList';
+import FilmPreview from '@/components/films_components/FilmPreview.vue';
+import mapGetters from 'vuex';
 
 export default {
 	name: "Index",
@@ -25,7 +26,6 @@ export default {
 			},
 			popular_films: this.$store.state.popular_films,
 			preview_film: null,
-			profile_name: this.$store.state.account.profile.name
 		}
 	},
 	methods:
@@ -40,7 +40,7 @@ export default {
 		{
 			this.preview_film = film;
 		}
-	}
+	},
 }
 </script>
 
@@ -49,7 +49,7 @@ export default {
 		<Header fixed/>
 		<BillboardPresentation :film="billboard_film" @show_preview="showPreview"/>
 		<FilmList name="Biggest success on Netflix" :films="popular_films" @show_preview="showPreview"/>
-		<FilmList :name="'Resume with ' + profile_name + ' profile'" :films="shuffle(popular_films)" @show_preview="showPreview"/>
+		<FilmList :name="'Resume with ' + this.$store.state.account.profile_img + ' profile'" :films="shuffle(popular_films)" @show_preview="showPreview"/>
 		<FilmList name="Current trends" :films="shuffle(popular_films)" @show_preview="showPreview"/>
 		<FilmList name="Review" :films="shuffle(popular_films)" @show_preview="showPreview"/>
 		<FilmList name="Top 10 in France today" :films="shuffle(popular_films)" numbered @show_preview="showPreview"/>

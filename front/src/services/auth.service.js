@@ -1,4 +1,5 @@
 import axios from 'axios'
+import AccountStore from '../store/account';
 
 const API_URL = "http://localhost:3000"
 
@@ -35,5 +36,17 @@ export async function loadAccount()
 		axios.get(API_URL + '/account', { headers: authHeader() })
 		.then(res => resolve(res.data))
 		.catch(err => reject(err));
+	});
+}
+
+export async function active_interceptors()
+{
+	axios.interceptors.request.use(request =>
+	{
+		if (request.url.startsWith(API_URL)
+			&& AccountStore.state.id != null)
+		{
+			request.headers.common.Authorization = 'Bearer ' + window.localStorage.getItem("access_token");
+		}
 	});
 }
