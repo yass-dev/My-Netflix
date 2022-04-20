@@ -165,7 +165,6 @@ export default {
 	padding: 0 2px;
 	flex: 0 0 25%;
 	width: 25%;
-	background: #141414;
 }
 
 @media screen and (max-width:499px)
@@ -244,6 +243,7 @@ export default {
 .slide img
 {
 	height: 100%;
+	background: #141414;
 }
 
 .swipe_button
