@@ -32,15 +32,17 @@ export default {
 			show_right_swipe_button: false
 		}
 	},
-	created()
+	computed:
 	{
-		if (this.films.length > 10 && this.numbered)
-			this.films.splice(10);
+		filtered_films()
+		{
+			if (this.films.length > 10 && this.numbered)
+				this.films.splice(10);
+			return this.films;
+		}
 	},
 	mounted()
 	{
-		if (this.numbered)
-			console.log("I AM NUMBERED => ", this.films.length)
 		this.setSlidePerView();
 		this.handleSwipeButtonsVisibility();
 		window.addEventListener('resize', this.setSlidePerView);
@@ -114,7 +116,7 @@ export default {
 				</div>
 				<div class="slide_content">
 					<div class="slide_container" :style="{transform: 'translateX(' + offset * 100 + '%)'}" ref="slide_container">
-						<div class="slide" @click="showPreview(film)" v-for="(film, index) in films" :key="film.id">
+						<div class="slide" @click="showPreview(film)" v-for="(film, index) in filtered_films" :key="film.id">
 							<svg v-if="numbered">
 								<use :href="'#rank-' + (index + 1)"></use>
 							</svg>
@@ -155,7 +157,7 @@ export default {
 	display: flex;
 	flex-wrap: nowrap;
 	width: 100%;
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 
 .slide
@@ -163,9 +165,17 @@ export default {
 	position: relative;
 	cursor: pointer;
 	padding: 0 2px;
-	flex: 0 0 25%;
+	flex: 0 0 auto;
 	width: 25%;
+	transition: all 0.5s;
 }
+
+.slide:hover
+{
+	transform: scale(1.5);
+	z-index: 1;
+}
+
 
 @media screen and (max-width:499px)
 {
@@ -274,6 +284,14 @@ export default {
 .film_list:hover .swipe_button *
 {
 	opacity: 1;
+}
+
+@media screen and (max-width:499px)
+{
+	.swipe_button *
+	{
+		opacity: 1;
+	}
 }
 
 .right_button

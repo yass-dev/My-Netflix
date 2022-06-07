@@ -4,6 +4,13 @@ import * as AuthService from '../../services/auth.service';
 
 export default {
 	name: 'SignUp',
+	data()
+	{
+		return {
+			email: '',
+			password: ''
+		}
+	},
 	methods:
 	{
 		goToSignIn()
@@ -11,11 +18,21 @@ export default {
 			this.$emit('change_mode')
 		},
 
-		signUp()
+		signUp(e)
 		{
-			let email = this.$refs.email.value;
-			let password = this.$refs.password.value;
-			AuthService.sign_up(email, password);
+			e.preventDefault();
+
+			AuthService.sign_up(this.email, this.password)
+			.then(res =>
+			{
+				alert(res.message);
+				this.goToSignIn();
+			})
+			.catch(err =>
+			{
+				console.error(err.response.data)
+				alert(`${err.response.data.message} (${err.response.data.statusCode})`);
+			})
 		}
 	}
 }
@@ -24,9 +41,11 @@ export default {
 <template>
 	<div class="sign_up">
 		<h1>Sign up</h1>
-		<input type="text" placeholder="Email" ref="email"/>
-		<input type="password" placeholder="Password" ref="password"/>
-		<div id="sign_up_button" @click="signUp">Sign up</div>
+		<form @submit="signUp">
+			<input type="text" placeholder="Email" v-model="email"/>
+			<input type="password" placeholder="Password" v-model="password"/>
+			<input type="submit" id="sign_up_button" value="Sign up"/>
+		</form>
 		<p @click="goToSignIn">Already on Netflix ? <span>Sign in now</span></p>
 	</div>
 </template>
@@ -53,7 +72,7 @@ export default {
 	}
 }
 
-.sign_up > *
+form > *
 {
 	width: 100%;
 }

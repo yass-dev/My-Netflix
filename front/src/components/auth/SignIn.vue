@@ -4,6 +4,13 @@ import * as AuthService from '../../services/auth.service';
 
 export default {
 	name: 'SignIn',
+	data()
+	{
+		return {
+			email: 'yass@gmail.com',
+			password: 'test'
+		}
+	},
 	methods:
 	{
 		goToSignUp()
@@ -13,19 +20,16 @@ export default {
 		signIn(e)
 		{
 			e.preventDefault();
-			let email = this.$refs.email.value;
-			let password = this.$refs.password.value;
 
-			this.$store.dispatch('account/sign_in', {email: email, password: password})
-			.then(() =>
+			AuthService.sign_in(this.email, this.password)
+			.then(({access_token, user}) =>
 			{
-				this.$router.push('/profiles');
+				this.$store.commit('account/SET_USER', {access_token, user});
+				this.$router.push({name: 'profiles'});
 			})
 			.catch(err =>
 			{
-				if (err.response.status == 401)
-					alert("Invalid credentials");
-				console.log("Error =>", err);
+				alert(`${err.message} (${err.code})`);
 			})
 		}
 	}
@@ -36,8 +40,8 @@ export default {
 	<div class="sign_in">
 		<h1>Sign in</h1>
 		<form @submit="signIn">
-			<input type="text" placeholder="Email" ref="email" value="yass@gmail.com"/>
-			<input type="password" placeholder="Password" ref="password"/>
+			<input type="text" placeholder="Email" v-model="email"/>
+			<input type="password" placeholder="Password" v-model="password"/>
 			<input type="submit" id="sign_in_button" value="Sign in"/>
 		</form>
 		<p @click="goToSignUp">New to Netflix ? <span>Sign up now</span></p>

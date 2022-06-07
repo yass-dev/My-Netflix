@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Req, Request, UnauthorizedException, UseGuards } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
+import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { SignInDto, SignUpDto } from './dto/auth.dto';
 import { JwtAuthGuard } from './jwt.guard';
@@ -9,7 +9,7 @@ import { LocalAuthGuard } from './local-auth.guard';
 export class AuthController
 {
 	constructor(
-				private usersService: UsersService,
+				private user_service: UserService,
 				private authService: AuthService)
 	{
 
@@ -18,7 +18,7 @@ export class AuthController
 	@Post("/sign_up")
 	async sign_up(@Body() body: SignUpDto)
 	{
-		await this.usersService.createUser(body.email, body.password);
+		await this.user_service.createUser(body.email, body.password);
 		return {message: "User created successfully"};
 	}
 
@@ -26,10 +26,11 @@ export class AuthController
 	@Post("/sign_in")
 	async sign_in(@Request() req, @Body() body: SignInDto)
 	{
-		let token = this.authService.generate_token(req.user);
+		const token = this.authService.generate_token(req.user);
+		const user = await this.user_service.getUserById(req.user.id);
 		return {
-					message: "Signed in successfully",
-					access_token: token
-				};
+				access_token: token,
+				user: user
+			};
 	}
 }

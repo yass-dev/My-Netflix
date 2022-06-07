@@ -6,7 +6,7 @@ import Review from '@/views/Browse/Review.vue';
 import WatchView from '../views/WatchView.vue';
 import AuthView from '../views/AuthView.vue';
 import MyProfile from '../views/MyProfile';
-import store from '../store/index';
+import AccountStore from '../store/account';
 
 const routes = [
 	{
@@ -61,26 +61,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) =>
 {
-	if (to.matched.some(record => record.meta.requiresAuth))
-	{
-		if (store.state.account.id)
-		{
-			next();
-			return ;
-		}
-		next('/')
-	}
-	else if (to.matched.some(record => record.meta.requiresProfile))
-	{
-		if (AccountStore.state.profile_name)
-		{
-			next();
-			return ;
-		}
-		next('/profiles');
-	}
+	if (to.matched.some(record => record.meta.requiresAuth) && AccountStore.state.is_logged_in == false)
+		next({name: 'auth'});
+	else if (to.matched.some(record => record.meta.requiresProfile) && AccountStore.state.selected_profile == null)
+		next({name: 'profiles'});
 	else
-		next()
+		next();
 })
 
 export default router

@@ -94,7 +94,7 @@ export default {
 			<router-link :to="{name: 'browse_index'}">Series</router-link>
 			<router-link :to="{name: 'browse_index'}">Movies</router-link>
 			<router-link :to="{name: 'browse_index'}">Most viewed</router-link>
-			<router-link :to="{name: 'my_profile'}">My profile</router-link>
+			<!-- <router-link :to="{name: 'my_profile'}">My profile</router-link> -->
 		</div>
 		<div class="tool_nav">
 			<div id="search_button" class="icon button" :class="{active: search_expanded}" @click="expand_search">
@@ -104,7 +104,7 @@ export default {
 			<div id="notification_button" class="icon button"></div>
 			<div id="account_button" class="button" @mouseenter="show_account_popup" @mouseleave="hide_account_popup">
 				<div class="profile_img_container">
-					<img :src="this.$store.state.account.profile_img"/>
+					<img :src="this.$store.state.account.selected_profile.image"/>
 				</div>
 				<div id="account_popup" ref="account_popup">
 					<div class="chevron-up"></div>
@@ -112,11 +112,11 @@ export default {
 						<section class="profile_section">
 							<div class="profile_item" @click="switchProfile(profile)" v-for="(profile, index) in getProfiles" :key="index">
 								<div class="image_container">
-									<img :src="profile.img"/>
+									<img :src="profile.image"/>
 								</div>
 								{{ profile.name }}
 							</div>
-							<p id="manage_profiles_button">Manage profiles</p>
+							<router-link id="manage_profiles_button" :to="{name: 'profiles'}">Manage profiles</router-link>
 						</section>
 						<section>
 							<p>Direct</p>
@@ -365,6 +365,7 @@ header.opaque
 	transition: all 0.25s;
 	opacity: 0;
 	visibility: hidden;
+	z-index: 1;
 	transition: opacity 0.25s;
 }
 
@@ -414,7 +415,7 @@ header.opaque
 	border-bottom: solid 1px rgba(255, 255, 255, 0.3);
 }
 
-#account_popup .content p
+#account_popup .content > *
 {
 	margin: 0.5rem;
 }

@@ -1,39 +1,45 @@
-import { createStore } from 'vuex';
 import * as AuthService from '../services/auth.service'
 
 export default ({
 	namespaced: true,
 	state:
 	{
-		id: null,
-		email: null,
-		profile_name: null,
-		profile_img: null,
-		profiles_list: []
+		is_logged_in: false,
+		access_token: null,
+		user:
+		{
+			id: null,
+			email: null,
+			profiles: []
+		},
+		selected_profile: null,
 	},
 	mutations:
 	{
-		SET_PROFILE(state, {profile: profile})
+		SET_ACCESS_TOKEN(state, {access_token})
 		{
-			state.profile_name = profile.name;
-			state.profile_img = profile.img;
+			state.access_token = access_token;
 		},
 
-		INIT_ACCOUNT(state, {account: account})
+		SET_PROFILE(state, {profile})
 		{
-			console.log("INITTT", account);
-			state.id = account.id;
-			state.email = account.email;
-			state.profiles_list = account.profiles;
-			console.log("INITTT", state);
+			state.selected_profile = profile
 		},
+
+		SET_USER(state, {access_token, user})
+		{
+			state.is_logged_in = true;
+			state.access_token = access_token;
+			state.user = user;
+		},
+
 		RESTORE(state)
 		{
-			state.profile_name = null;
-			state.profile_img = null;
-			state.profiles_list = [];
-			state.id = null;
-			state.email = null;
+			state.access_token = null;
+			state.selected_profile = null;
+			state.user.id = null;
+			state.user.email = null;
+			state.user.profiles = [];
 		}
 	},
 	actions:
@@ -47,7 +53,7 @@ export default ({
 		{
 			return new Promise((resolve, reject) =>
 			{
-			AuthService.sign_in(email, password)
+				AuthService.sign_in(email, password)
 				.then(res =>
 				{
 					window.localStorage.setItem('access_token', res.access_token);
@@ -64,27 +70,6 @@ export default ({
 				})
 			});
 		},
-		
-		async init(store)
-		{
-			return new Promise((resolve, reject) =>
-			{
-				AuthService.loadAccount()
-				.then(account =>
-				{
-					store.commit('INIT_ACCOUNT', {account: account});
-					resolve();
-					return ;
-				})
-				.catch(err =>
-				{
-					console.log(err);
-					store.commit('RESTORE');
-					reject(err);
-					return ;
-				});
-			})
-		},
 
 		async logout(store)
 		{
@@ -95,17 +80,17 @@ export default ({
 	{
 		getProfile(state)
 		{
-			return state.profile;
+			return state.selected_profile;
 		},
 
 		getProfiles(state)
 		{
-			return state.profiles_list;
+			return state.user.profiles;
 		},
 
 		getOtherProfiles(state)
 		{
-			return state.profiles_list.filter(profile => profile != state.profile)
+			return state.user.profiles.filter(profile => profile != state.selected_profile)
 		}
 	},
 })

@@ -1,7 +1,8 @@
 import axios from 'axios'
 import AccountStore from '../store/account';
 
-const API_URL = "http://localhost:3000"
+const API_URL = "http://localhost:3000";
+
 
 function authHeader()
 {

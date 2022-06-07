@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common"
 import { TypeOrmModule } from "@nestjs/typeorm"
-import { User } from "src/users/user.entity"
 
 @Module(
 {
@@ -12,7 +11,7 @@ import { User } from "src/users/user.entity"
 		username: 'root',
 		password: '',
 		database: 'netflix',
-		entities: [User],
+		entities: [],
 		synchronize: true,
 		autoLoadEntities: true
 	})]

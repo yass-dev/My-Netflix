@@ -1,7 +1,6 @@
 import { createStore } from 'vuex'
 import AccountStore from './account';
 import MyProfileStore from './my_profile';
-import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
 	namespaced: true,
@@ -131,8 +130,6 @@ export default createStore({
 	},
 	plugins:
 	[
-		createPersistedState({
-			paths: ['account', 'my_profile']
-		}),
+
 	]
 })

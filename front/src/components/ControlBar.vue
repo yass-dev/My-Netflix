@@ -1,6 +1,5 @@
 <script>
 
-
 /**
  * Events:
  *   - play
@@ -26,9 +25,6 @@ export default {
 			speed: 1.0,
 			audio: this.audios[0],
 			subtitle: null,
-			show_volume_popup: false,
-			show_audio_popup: false,
-			show_speed_popup: false,
 			start_move_volume_y: null,
 			volume_value: 100,
 			start_move_time_x: null,
@@ -54,14 +50,10 @@ export default {
 		back_10()
 		{
 			this.$emit('back_10');
-			// this.current_time_value = this.current_time_value > 10 ? this.current_time_value - 10 : 0;
-			// this.$emit('time_changed', this.current_time_value);
 		},
 		forward_10()
 		{
 			this.$emit('forward_10');
-			// this.current_time_value = this.current_time_value < this.duration - 10 ? this.current_time_value + 10 : this.duration;
-			// this.$emit('time_changed', this.current_time_value);
 		},
 		switchAudio(audio)
 		{
@@ -77,21 +69,6 @@ export default {
 		{
 			this.subtitle = subtitle;
 			this.$emit("subtitle_changed", subtitle);
-		},
-		showPopup(name)
-		{
-			if (name == "volume")
-				this.show_volume_popup = true;
-			else if (name == "audio")
-				this.show_audio_popup = true;
-			else if (name == "speed")
-				this.show_speed_popup = true;
-		},
-		hidePopup()
-		{
-			this.show_volume_popup = false;
-			this.show_audio_popup = false;
-			this.show_speed_popup = false;
 		},
 		setSpeed(speed)
 		{
@@ -228,29 +205,29 @@ export default {
 						<path fill="currentColor" d="M11.8291288,3.00143042 L10.4575629,1.08123819 L12.0850299,-0.0812381937 L15.0002,4 L12.0850299,8.08123819 L10.4575629,6.91876181 L11.8267943,5.0018379 C7.48849327,5.09398699 4,8.63960287 4,13 C4,17.418278 7.581722,21 12,21 C16.418278,21 20,17.418278 20,13 C20,11.4220159 19.5433052,9.91438076 18.6981119,8.6237266 L20.3712764,7.52804389 C21.4281248,9.14190637 22,11.0297737 22,13 C22,18.5228475 17.5228475,23 12,23 C6.4771525,23 2,18.5228475 2,13 C2,7.53422249 6.38510184,3.09264039 11.8291288,3.00143042 Z M8.56,17 L8.56,11.41 L6.9,11.92 L6.9,10.75 L9.88,9.91 L9.88,17 L8.56,17 Z M14.4,17.15 C13.8399972,17.15 13.3500021,17.0016682 12.93,16.705 C12.5099979,16.4083318 12.1850012,15.988336 11.955,15.445 C11.7249989,14.9016639 11.61,14.2600037 11.61,13.52 C11.61,12.786663 11.7249989,12.1466694 11.955,11.6 C12.1850012,11.0533306 12.5099979,10.6316681 12.93,10.335 C13.3500021,10.0383318 13.8399972,9.89 14.4,9.89 C14.9600028,9.89 15.4499979,10.0383318 15.87,10.335 C16.2900021,10.6316681 16.6149988,11.0533306 16.845,11.6 C17.0750012,12.1466694 17.19,12.786663 17.19,13.52 C17.19,14.2600037 17.0750012,14.9016639 16.845,15.445 C16.6149988,15.988336 16.2900021,16.4083318 15.87,16.705 C15.4499979,17.0016682 14.9600028,17.15 14.4,17.15 Z M14.4,15.97 C14.8400022,15.97 15.1916654,15.7533355 15.455,15.32 C15.7183347,14.8866645 15.85,14.2866705 15.85,13.52 C15.85,12.7533295 15.7183347,12.1533355 15.455,11.72 C15.1916654,11.2866645 14.8400022,11.07 14.4,11.07 C13.9599978,11.07 13.6083346,11.2866645 13.345,11.72 C13.0816654,12.1533355 12.95,12.7533295 12.95,13.52 C12.95,14.2866705 13.0816654,14.8866645 13.345,15.32 C13.6083346,15.7533355 13.9599978,15.97 14.4,15.97 Z M14.4575629,6.91876181 L16.5423928,4 L14.4575629,1.08123819 L16.0850299,-0.0812381937 L19.0002,4 L16.0850299,8.08123819 L14.4575629,6.91876181 Z"></path>
 					</svg>
 				</div>
-				<div class="button" id="volume" @mouseenter="showPopup('volume')" @mouseleave="hidePopup" @click="setVolumeEnabled(!this.volume_enabled)">
+				<div class="button" id="volume" @click="setVolumeEnabled(!this.volume_enabled)">
 					<svg viewBox="0 0 24 24" v-if="this.volume_enabled">
 						<path fill="currentColor" d="M9,7.82842712 L6.82842712,10 L4,10 L4,14 L6.82842712,14 L9,16.1715729 L9,7.82842712 Z M11,21 L6,16 L2,16 L2,8 L6,8 L11,3 L11,21 Z M13.7437869,16.3889482 L12.3295734,14.9747347 C13.9546583,13.3496497 13.9546583,10.7148664 12.3295734,9.08978146 L13.7437869,7.6755679 C16.1499205,10.0817014 16.1499205,13.9828147 13.7437869,16.3889482 Z M16.2137399,18.2137399 L14.7995264,16.7995264 C17.4324159,14.1666368 17.4324159,9.89787935 14.7995264,7.26498977 L16.2137399,5.8507762 C19.6276781,9.26471437 19.6276781,14.7998018 16.2137399,18.2137399 Z M18.6836929,20.0385316 L17.2694793,18.6243181 C20.9101736,14.9836239 20.9101736,9.08089228 17.2694793,5.44019807 L18.6836929,4.02598451 C23.1054357,8.4477273 23.1054357,15.6167888 18.6836929,20.0385316 Z"></path>
 					</svg>
 					<svg viewBox="0 0 24 24" v-else>
 						<path fill="currentColor" d="M9,7.82842712 L6.82842712,10 L4,10 L4,14 L6.82842712,14 L9,16.1715729 L9,7.82842712 Z M11,21 L6,16 L2,16 L2,8 L6,8 L11,3 L11,21 Z M17,10.5857864 L20.2928932,7.29289322 L21.7071068,8.70710678 L18.4142136,12 L21.7071068,15.2928932 L20.2928932,16.7071068 L17,13.4142136 L13.7071068,16.7071068 L12.2928932,15.2928932 L15.5857864,12 L12.2928932,8.70710678 L13.7071068,7.29289322 L17,10.5857864 Z"></path>
 					</svg>
-					<div class="popup" v-if="show_volume_popup && volume_enabled" id="volume_slider">
+					<div class="popup" v-if="volume_enabled" id="volume_slider">
 						<div class="bar" ref="volume_bar" @click="moveVolumeCursor">
 							<div class="progress" :style="{height: volume_value + '%'}"></div>
 							<div class="cursor" :style="{bottom: volume_value + '%'}" @mousedown="startMoveVolumeCursor" @mouseup="endMoveVolumeCursor"></div>
 						</div>
 					</div>
-					<div class="back" v-if="show_volume_popup"></div>
+					<div class="back"></div>
 				</div>
 			</div>
 			<p class="film_name">{{ film_name }}</p>
 			<div class="config_buttons_container">
-				<div class="button" id="audio_subtitle_button" @mouseenter="showPopup('audio')" @mouseleave="hidePopup">
+				<div class="button" id="audio_subtitle_button">
 					<svg viewBox="0 0 24 24">
 						<path fill="currentColor" d="M5,15 L5,13 L12,13 L12,15 L5,15 Z M14,15 L14,13 L19,13 L19,15 L14,15 Z M10,9 L10,11 L5,11 L5,9 L10,9 Z M11.9998571,11 L12.0001429,9.00000001 L19.0001429,9.00100001 L18.9998571,11.001 L11.9998571,11 Z M17,17 L21,17 L21,5 L3,5 L3,17 L12.9968832,17 L17,19.4392488 L17,17 Z M1,3 L23,3 L23,19 L19,19 L19,22.9999671 L12.4355463,19 L1,19 L1,3 Z"></path>
 					</svg>
-					<div class="popup" v-if="show_audio_popup" id="audio_subtitle_popup">
+					<div class="popup" id="audio_subtitle_popup">
 						<div class="category" id="audio">
 							<p class="name">Audio</p>
 							<div class="values">
@@ -287,13 +264,13 @@ export default {
 							</div>
 						</div>
 					</div>
-					<div class="back" v-if="show_audio_popup"></div>
+					<div class="back"></div>
 				</div>
-				<div class="button" id="speed_button" @mouseenter="showPopup('speed')" @mouseleave="hidePopup">
+				<div class="button" id="speed_button">
 					<svg viewBox="3 3 28 28">
 						<path fill="currentColor" d="M19.8023846,13.7111538 L22.0437692,15.0580769 L19.2865317,19.6534728 C19.4959852,20.029472 19.6153846,20.4622373 19.6153846,20.9224231 C19.6153846,22.3648077 18.4423846,23.5378077 17,23.5378077 C15.5576154,23.5378077 14.3846154,22.3648077 14.3846154,20.9224231 C14.3846154,19.4800385 15.5576154,18.3070385 17,18.3070385 C17.0149054,18.3070385 17.0297821,18.3071637 17.044629,18.3074133 L19.8023846,13.7111538 Z M28.7025597,25.4286405 C27.4615385,24.8461538 27.4615385,24.8461538 26.3609633,24.2636672 C27.0809129,22.8165686 27.4611462,21.2406017 27.4611462,19.6153846 C27.4611462,13.8370647 22.7779276,9.15384615 16.9996077,9.15384615 C11.2221213,9.15384615 6.53806923,13.8375388 6.53806923,19.6153846 C6.53806923,21.2391793 6.91888033,22.8151015 7.63955975,24.2636672 C6.53846154,24.8461538 6.53846154,24.8461538 5.29796333,25.4286405 C4.39964336,23.6230174 3.92268462,21.6492043 3.92268462,19.6153846 C3.92268462,12.3930568 9.77772922,6.53846154 16.9996077,6.53846154 C24.2223647,6.53846154 30.0765308,12.3926276 30.0765308,19.6153846 C30.0765308,21.6502951 29.600283,23.6242168 28.7025597,25.4286405 Z"></path>
 					</svg>
-					<div class="popup" id="speed_popup" v-if="show_speed_popup">
+					<div class="popup" id="speed_popup">
 						<p>Speed</p>
 						<div class="slider_container">
 							<div class="line"></div>
@@ -329,7 +306,6 @@ export default {
 							</div>
 						</div>
 					</div>
-					<div class="back" v-if="show_speed_popup"></div>
 				</div>
 				<div class="button" id="fullscreen_button" @click="setFullscreen(!this.is_fullscreen)">
 					<svg viewBox="0 0 24 24" v-if="is_fullscreen">
@@ -458,6 +434,11 @@ export default {
 	z-index: 0;
 }
 
+#volume:not(:hover) #volume_slider
+{
+	display: none;
+}
+
 #volume_slider
 {
 	top: 0;
@@ -505,6 +486,11 @@ export default {
 	transform: translate(-50%, 50%);
 	width: 1.125rem;
 	height: 1.125rem;
+}
+
+#audio_subtitle_button:not(:hover)  #audio_subtitle_popup
+{
+	display: none;
 }
 
 #audio_subtitle_popup
@@ -576,12 +562,18 @@ export default {
 	background: rgba(255, 255, 255, 0.1);
 }
 
+#speed_button:not(:hover) #speed_popup
+{
+	display: none;
+}
+
 #speed_popup
 {
-	position: fixed;
-	bottom: calc(2rem + 5.5vw);
-	right: 0;
-	padding: 2rem 2.5rem;
+	position: absolute;
+    top: 0;
+    transform: translateY(-100%);
+    right: 0;
+    padding: 2rem 2.5rem;
 }
 
 @media screen and (max-width: 500px)

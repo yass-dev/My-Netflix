@@ -25,7 +25,7 @@ export default {
 	<div class="profile_list">
 		<div class="profile_item" v-for="profile in getProfiles" :key="profile.id" @click="set_profile(profile)">
 			<div class="img_container">
-				<img :src="profile.img"/>
+				<img :src="profile.image"/>
 			</div>
 			<p class="name">{{ profile.name }}</p>
 		</div>
@@ -53,6 +53,7 @@ export default {
 	width: 10vw;
 	height: 10vw;
 	border: solid 1px transparent;
+	margin: 0 auto;
 	transition: all 0.125s;
 }
 
@@ -70,6 +71,15 @@ export default {
 .profile_item:hover .name
 {
 	color: white;
+}
+
+@media screen and (max-width:499px)
+{
+	.img_container
+	{
+		width: 20vw;
+		height: 20vw;
+	}
 }
 
 </style>

@@ -1,5 +1,5 @@
-import { User } from "src/users/user.entity";
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "../user.entity";
 
 @Entity()
 export class Profile extends BaseEntity
@@ -11,8 +11,8 @@ export class Profile extends BaseEntity
 	name: string;
 
 	@Column()
-	img: string;
+	image: string;
 
-	@ManyToOne(() => User, user => user.profiles)
+	@ManyToOne(() => User, u => u.profiles, {onDelete: 'CASCADE'})
 	user: User;
 }
